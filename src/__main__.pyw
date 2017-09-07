@@ -2,5 +2,5 @@
 
 import common
 
-app = CDSApp(0)
+app = common.CDSApp(0)
 app.MainLoop()
