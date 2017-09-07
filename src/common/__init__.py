@@ -42,9 +42,9 @@ class CDSApp(wx.App):
         return cdsWin
 
     def closeWindow(self, window):
-        if window in wins:
-            wins.remove(window)
-        window.Destroy()
+        if window in self.wins:
+            self.wins.remove(window)
+        window.frame.Destroy()
     
     def OnInit(self):
         if len(argv) > 1 and argv[1] in windowTypes:
