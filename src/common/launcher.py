@@ -3,5 +3,5 @@
 
 import common
 
-class Launcher(common.CDSWin):
+class LauncherWin(common.CDSWin):
     pass

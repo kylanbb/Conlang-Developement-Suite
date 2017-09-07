@@ -22,10 +22,10 @@ import dictionary, phonology #, family
 from . import launcher
 
 windowTypes = {
-    "launch": launcher.Launcher,
-    "dictionary": dictionary.Dictionary,
-    #"family": family.Family,
-    "phonology": phonology.Phonology
+    "launch": launcher.LauncherWin,
+    "dictionary": dictionary.DictionaryWin,
+    #"family": family.FamilyWin,
+    "phonology": phonology.PhonologyWin
     # and more to come
     }
 

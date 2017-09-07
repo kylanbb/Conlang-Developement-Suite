@@ -3,5 +3,5 @@
 
 import common
 
-class Dictionary(common.CDSWin):
+class DictionaryWin(common.CDSWin):
     pass
