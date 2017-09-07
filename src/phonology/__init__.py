@@ -31,8 +31,6 @@ class PhonologyWin(common.CDSWin):
         # inventory, phonotactics, and allophony (and possibly more)
         self.notebook = wx.Notebook(self.frame, style=wx.NB_TOP)
         self.notebook.SetDoubleBuffered(True)
-        self.frame.Sizer = wx.BoxSizer()
-        self.frame.Sizer.Add(self.notebook, proportion=1, flag=wx.EXPAND)
 
         self.inventory = inventory.InventoryView(self)
         self.allophony = allophony.AllophonyView(self)
