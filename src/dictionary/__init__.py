@@ -4,4 +4,4 @@
 import common
 
 class DictionaryWin(common.CDSWin):
-    pass
+    title = "CDS Dictionary"

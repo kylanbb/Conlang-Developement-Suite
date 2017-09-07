@@ -17,6 +17,8 @@ class PhonologyView:
 from . import inventory, allophony, phonotactics
 
 class PhonologyWin(common.CDSWin):
+    title = "CDS Phonology"
+    
     def viewInventory(self):
         self.notebook.ChangeSelection(0)
     def viewAllophony(self):

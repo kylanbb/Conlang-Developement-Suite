@@ -8,10 +8,11 @@ from sys import argv
 
 class CDSWin:
     "Abstract base class for app windows."
-    frame = None
+    
+    title = ""
     def __init__(self):
         # creäte a top-level window, leave the rest to derived classes
-        self.frame = wx.Frame(None)
+        self.frame = wx.Frame(None, title=self.title)
         self.frame.Bind(wx.EVT_CLOSE, lambda e: wx.GetApp().closeWindow(self))
 
     def build(self):

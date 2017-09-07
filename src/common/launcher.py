@@ -4,4 +4,4 @@
 import common
 
 class LauncherWin(common.CDSWin):
-    pass
+    title = "Conlang Development Suite"
