@@ -5,16 +5,6 @@
 
 import wx
 from sys import argv
-from .. import dictionary, phonology #, family
-from . import launcher
-
-windowTypes = {
-    "launch": launcher.Launcher,
-    "dictionary": dictionary.Dictionary,
-    #"family": family.Family,
-    "phonology": phonology.Phonology
-    # and more to come
-    }
 
 class CDSWin:
     "Abstract base class for app windows."
@@ -28,6 +18,16 @@ class CDSWin:
         # abstract method
         pass
     
+import dictionary, phonology #, family
+from . import launcher
+
+windowTypes = {
+    "launch": launcher.Launcher,
+    "dictionary": dictionary.Dictionary,
+    #"family": family.Family,
+    "phonology": phonology.Phonology
+    # and more to come
+    }
 
 class CDSApp(wx.App):
     "The application."
@@ -35,11 +35,11 @@ class CDSApp(wx.App):
 
     def newWindow(self, typ):
         cdsWin = windowTypes[typ]() # intentionally unsafe
-        wins.append(cdsWin)
+        self.wins.append(cdsWin)
         return cdsWin
     
     def OnInit(self):
-        if argv[1] in windowTypes:
+        if len(argv) > 1 and argv[1] in windowTypes:
             firstWin = self.newWindow(argv[1])
         else:
             firstWin = self.newWindow("launch")
