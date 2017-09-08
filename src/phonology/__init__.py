@@ -1,7 +1,7 @@
 
 """A phonology editor with IPA chart, phonotactics, allophony, etc."""
 
-import common
+from .. import common
 import wx
 
 class PhonologyView:

@@ -1,7 +1,7 @@
 
 """The allophony editor"""
 
-import phonology
+from .. import phonology
 
 class AllophonyView(phonology.PhonologyView):
     def build(self):
