@@ -3,8 +3,13 @@
 
 # TODO: rewrite so that sub-apps are dynamically looked up instead of statically listed
 
+from sys import path
+import os.path
+if path[0] == os.path.dirname(__file__):
+    # modify sys.path so that it points to src, not to src/common
+    path[0] = os.path.dirname(path[0]) # parent directory
+
 import wx
-from sys import argv
 
 class CDSWin:
     "Abstract base class for app windows."

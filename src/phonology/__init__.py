@@ -1,6 +1,12 @@
 
 """A phonology editor with IPA chart, phonotactics, allophony, etc."""
 
+from sys import path
+import os.path
+if path[0] == os.path.dirname(__file__):
+    # modify sys.path so that it points to src, not to src/phonology
+    path[0] = os.path.dirname(path[0]) # parent directory
+
 from .. import common
 import wx
 
