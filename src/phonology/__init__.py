@@ -20,7 +20,6 @@ class PhonologyView:
         # abstract method
         pass
 
-from . import inventory, allophony, phonotactics
 
 class PhonologyWin(common.CDSWin):
     title = "CDS Phonology"
@@ -33,6 +32,7 @@ class PhonologyWin(common.CDSWin):
         self.notebook.ChangeSelection(2)
     
     def build(self):
+        from phonology import inventory, allophony, phonotactics
         # a Notebook that gives a choice between
         # inventory, phonotactics, and allophony (and possibly more)
         self.notebook = wx.Notebook(self.frame, style=wx.NB_TOP)
