@@ -36,6 +36,8 @@ windowTypes = {
     # and more to come
     }
 
+from sys import argv
+
 class CDSApp(wx.App):
     "The application."
     wins = []
