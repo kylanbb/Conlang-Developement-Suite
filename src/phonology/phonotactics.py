@@ -1,7 +1,7 @@
 
 """The phonotactics editor"""
 
-from .. import phonology
+import phonology
 
 class PhonotacticsView(phonology.PhonologyView):
     def build(self):

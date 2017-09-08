@@ -25,7 +25,7 @@ class CDSWin:
         # abstract method
         pass
     
-from .. import dictionary, phonology #, family
+import dictionary, phonology #, family
 from . import launcher
 
 windowTypes = {

@@ -1,7 +1,7 @@
 
 """The phoneme inventory editor"""
 
-from .. import phonology
+import phonology
 
 class InventoryView(phonology.PhonologyView):
     def build(self):
