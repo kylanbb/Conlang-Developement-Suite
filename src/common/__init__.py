@@ -24,16 +24,16 @@ class CDSWin:
         "Build the GUI and everything belonging to it."
         # abstract method
         pass
-    
-import dictionary, phonology #, family
-from . import launcher
 
-windowTypes = {
-    "launch": launcher.LauncherWin,
-    "dictionary": dictionary.DictionaryWin,
-    #"family": family.FamilyWin,
-    "phonology": phonology.PhonologyWin
-    # and more to come
+def _windowTypes():
+    import dictionary, phonology #, family
+    import common.launcher as launcher
+    return {
+        "launch": launcher.LauncherWin,
+        "dictionary": dictionary.DictionaryWin,
+        #"family": family.FamilyWin,
+        "phonology": phonology.PhonologyWin
+        # and more to come
     }
 
 from sys import argv
@@ -41,9 +41,9 @@ from sys import argv
 class CDSApp(wx.App):
     "The application."
     wins = []
-
+       
     def newWindow(self, typ):
-        cdsWin = windowTypes[typ]() # intentionally unsafe
+        cdsWin = _windowTypes()[typ]() # intentionally unsafe
         cdsWin.build()
         cdsWin.frame.Show()
         self.wins.append(cdsWin)
@@ -55,7 +55,7 @@ class CDSApp(wx.App):
         window.frame.Destroy()
     
     def OnInit(self):
-        if len(argv) > 1 and argv[1] in windowTypes:
+        if len(argv) > 1 and argv[1] in _windowTypes():
             firstWin = self.newWindow(argv[1])
         else:
             firstWin = self.newWindow("launch")
