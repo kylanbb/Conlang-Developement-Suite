@@ -1,4 +1,4 @@
-
+# coding=utf-8
 """A phonology editor with IPA chart, phonotactics, allophony, etc."""
 
 import common

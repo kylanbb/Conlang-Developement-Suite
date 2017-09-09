@@ -1,4 +1,4 @@
-
+# coding=utf-8
 """This sets up the application object and dispatches creätion of new windows."""
 
 # TODO: rewrite so that sub-apps are dynamically looked up instead of statically listed

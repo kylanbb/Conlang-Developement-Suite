@@ -1,4 +1,4 @@
-
+# coding=utf-8
 """The allophony editor"""
 
 import phonology
