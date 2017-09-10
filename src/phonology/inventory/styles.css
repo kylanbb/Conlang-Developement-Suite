@@ -1,8 +1,26 @@
+th {
+    font-weight: normal;
+    font-size: large;
+    text-align: left;
+}
+
 .highlight {
-    background-color: yellow;
+    background-color: #ffffbb;
+}
+
+th.highlight {
+    font-weight: bold;
 }
 
 .added {
     color: red;
     font-weight: bold;
+}
+
+.has-item {
+    background-color: yellow;
+}
+
+td {
+    text-align: center;
 }

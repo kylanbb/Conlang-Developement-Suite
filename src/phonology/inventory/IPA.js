@@ -1,128 +1,107 @@
-function Consonant(symbol,place,manner,voicing){
-    this.symbol = symbol;
-    this.place = place;
-    this.manner = manner;
-    this.voicing = voicing;
+var places = ['bilabial','labio-dental','alveolar','retroflex','palatal',
+                'velar','uvular','glottal'];
+var manners = ['nasal','plosive','fricative','approximant'];
+
+function makeCategoryRow(category,before=''){
+    string = '<tr>' + before;
+    category.forEach(function(element){
+        string += '<th class="label ' + element + '">' + element + '</th>';
+    });
+    return string + '</tr>';
 };
 
-Consonant.prototype.getCategories = function(){
-    return [this.place,this.manner,this.voicing];
-};
-
-Consonant.prototype.makeSpan = function() {
-    return '<span id="' + consonants.indexOf(this) + '">' + this.symbol + '</span>';
-};
-
-var consonants = [
-    new Consonant('m','bilabial','nasal','voiced'),
-    new Consonant('n','alveolar','nasal','voiced'),
-    new Consonant('ɳ','retroflex','nasal','voiced'),
-    new Consonant('ɲ','palatal','nasal','voiced'),
-    new Consonant('ŋ','velar','nasal','voiced'),
-    new Consonant('ɴ','uvular','nasal','voiced'),
-    new Consonant('p','bilabial','plosive','unvoiced'),
-    new Consonant('b','bilabial','plosive','voiced'),
-    new Consonant('t','alveolar','plosive','unvoiced'),
-    new Consonant('d','alveolar','plosive','voiced'),
-    new Consonant('ʈ','retroflex','plosive','unvoiced'),
-    new Consonant('ɖ','retroflex','plosive','voiced'),
-    new Consonant('c','palatal','plosive','unvoiced'),
-    new Consonant('ɟ','palatal','plosive','voiced'),
-    new Consonant('k','velar','plosive','unvoiced'),
-    new Consonant('g','velar','plosive','voiced'),
-    new Consonant('q','uvular','plosive','unvoiced'),
-    new Consonant('ɢ','uvular','plosive','voiced'),
-    new Consonant('ʔ','glottal','plosive','unvoiced'),
-    new Consonant('f','labio-dental','fricative','unvoiced'),
-    new Consonant('v','labio-dental','fricative','voiced'),
-    new Consonant('s','alveolar','fricative','unvoiced'),
-    new Consonant('z','alveolar','fricative','voiced'),
-    new Consonant('ʂ','retroflex','fricative','unvoiced'),
-    new Consonant('ʐ','retroflex','fricative','voiced'),
-    new Consonant('ç','palatal','fricative','unvoiced'),
-    new Consonant('ʝ','palatal','fricative','voiced'),
-    new Consonant('x','velar','fricative','unvoiced'),
-    new Consonant('ɣ','velar','fricative','voiced'),
-    new Consonant('χ','uvular','fricative','unvoiced'),
-    new Consonant('ʁ','uvular','fricative','voiced')
-]
-
-var places = ['bilabial','labio-dental','alveolar','retroflex','palatal','velar','uvular','glottal'];
-var manners = ['nasal','plosive','fricative'];
-
-function findAtIntersection(place, manner){
-    var list = [];
-    for(var i=0;i<consonants.length;i++){
-        var consonant = consonants[i];
-        if(consonant.place === place && consonant.manner === manner){
-            list.push(consonant.makeSpan());
+function makeIPATable(){
+    var string = '<thead>' + makeCategoryRow(places,'<th></th>') + '</thead>';
+    string += '<tbody>';
+    var k = 0;
+    for(var i=0;i<manners.length;i++){
+        string += '<tr><th class ="label ' + manners[i] + '">' + manners[i] + '</th>';
+        for(var j=0;j<places.length;j++){
+            string += '<td class="' + manners[i] + ' ' + places[j] + '">';
+            while(k < consonants.length && consonants[k].place === places[j]){
+                string += ' <span class="' + consonants[k].voicing + '">' 
+                string += consonants[k].symbol + '</span>';
+                k += 1;
+            }
+            string += '</td>'
         }
+        string += '</tr>'
     }
-    return list;
+    return string + '</tbody>';
 };
 
-function makeTable(){
-    var string = '<thead><tr><td></td><td class="label ' + places.join('"></td><td class="label ') + '"></td></tr></thead><tbody>';
-    for(var i=0; i<manners.length;i++){
-        string += '<tr><td class="label ' + manners[i]+ '"></td>';
-        for(var j=0; j<places.length; j++){
-            string += '<td class="' + places[j] + ' ' + manners[i] + '">' + findAtIntersection(places[j],manners[i]).join() + '</td>';
-        }
-        string += '</tr>';
-    }
-    string += '</tbody>';
-    return string;
-};
-
-function updateHighlightedClasses(){
-    $('.highlight').removeClass('highlight');
-    $('.added').each(function(){
-        $(this).data().getCategories().forEach(function(category){
+function updateHighlightedClasses(clicked=false){
+    if(clicked || $('.added').length !== 0){
+        $('.highlight,.has-item').removeClass('highlight has-item');
+        $('.added').each(function(){
+            $(this).parent().attr('class').split(' ').forEach(function(category){
+                $('.'+category).addClass('highlight');
+            });
+            $(this).parent().addClass('has-item');
+        });
+    } else {
+        $('.label.highlight').each(function(){
+            var category = $(this).attr('class').split(' ')[1]
             $('.'+category).addClass('highlight');
         });
+    }
+};
+
+function showCollapsed(){
+    $('#IPA-table').find('th,td').show();
+    $('.label').each(function(){
+        if(!$(this).hasClass('highlight')){
+            var category = $(this).attr('class').split(' ')[1]
+            $('#IPA-table').find('.'+category).hide()
+        }
     });
 };
 
 $(document).ready(function(){
-    $('table').append(makeTable());
+    $('table#IPA-table').append(makeIPATable());
+    $('table#places').append(makeCategoryRow(places));
+    $('table#manners').append(makeCategoryRow(manners));
     
-    for(var i=0;i<consonants.length;i++){
-        $('#'+i).data(consonants[i]);
-        $('#'+i).removeAttr('id');
-    }
-    $('.label').each(function(){
-        $(this).html($(this).attr('class').split(' ')[1]);
-    });
+    $('table#places,table#manners').hide()
     
     $('span').on('click',function(){
         $(this).toggleClass('added');
-        updateHighlightedClasses();
+        updateHighlightedClasses(true);
     });
     
     $('.label').on('click',function(){
         var category = $(this).attr('class').split(' ')[1];
         if($(this).hasClass('highlight')){
-            $('.'+category).removeClass('highlight');
+            $('.'+category).removeClass('highlight has-item');
             $('.'+category+'>span').removeClass('added');
             updateHighlightedClasses();
         } else {
             updateHighlightedClasses();
             $('.'+category).addClass('highlight');
         }
+        if($('#expander').hasClass('collapsed')){
+            showCollapsed();
+        }
+    });
+    
+    $('#IPA-table').find('.label').on('mouseover',function(){
+        $('table#places,table#manners').show();
+    });
+    
+    $('#IPA-table').find('td').not('.label').on('mouseover',function(){
+        $('table#places,table#manners').hide();
     });
     
     $('#expander').on('click',function(){
         if($(this).hasClass('collapsed')){
-            $('td').show();
+            $('#IPA-table').find('th,td').show();
             $(this).removeClass('collapsed');
         } else {
-            $('.label').each(function(){
-                if(!$(this).hasClass('highlight')){
-                    var category = $(this).attr('class').split(' ')[1]
-                    $('.'+category).hide()
-                }
-            });
+            showCollapsed();
             $(this).addClass('collapsed');
+            if($('.added').length === 0){
+                $('table#places,table#manners').show();
+            }
         }
     });
 });
