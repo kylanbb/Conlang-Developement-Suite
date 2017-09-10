@@ -1,4 +1,4 @@
-
+# coding=utf-8
 """The phoneme inventory editor"""
 
 import phonology

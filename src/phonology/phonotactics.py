@@ -1,4 +1,4 @@
-
+# coding=utf-8
 """The phonotactics editor"""
 
 import phonology
