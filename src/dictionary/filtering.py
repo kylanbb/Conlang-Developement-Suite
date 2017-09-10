@@ -12,8 +12,7 @@ class Filter:
         # to the ‘Apply Filter’ button or whatever, bind parent.filter
         self.filterText = wx.TextCtrl(self.panel, value="filter", style=wx.TE_PROCESS_ENTER)
         self.panel.Sizer = wx.BoxSizer(wx.HORIZONTAL)
-        self.panel.Sizer.Add(filterText, proportion=1, flag=wx.EXPAND)
-        # somehow not visible.?
+        self.panel.Sizer.Add(self.filterText, proportion=1, flag=wx.EXPAND)
 
 class FilterOptions:
     "Data class representing the state of the filter."

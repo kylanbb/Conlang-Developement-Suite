@@ -26,6 +26,7 @@ class DictionaryWin(common.CDSWin):
         # on top, the filter panel
         self.dictFilter = filtering.Filter(self)
         self.frame.Sizer.Add(self.dictFilter.panel, proportion=0, flag=wx.EXPAND)
+        self.dictFilter.build()
         # below, the entry list and entry properties
         # in a SplitterWindow so the width can be adjusted
         self.splitter = wx.SplitterWindow(self.frame, style=wx.SP_LIVE_UPDATE)
