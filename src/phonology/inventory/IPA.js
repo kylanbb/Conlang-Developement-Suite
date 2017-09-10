@@ -1,17 +1,18 @@
 var places = ['bilabial','labio-dental','alveolar','retroflex','palatal',
                 'velar','uvular','glottal'];
 var manners = ['nasal','plosive','fricative','approximant'];
+var voices = ['default','voiced','unvoiced','lateral']
 
-function makeCategoryRow(category,before=''){
-    string = '<tr>' + before;
+function makeCategoryRow(category,heading,label='label'){
+    string = '<tr><th class="heading">' + heading + '</th>';
     category.forEach(function(element){
-        string += '<th class="label ' + element + '">' + element + '</th>';
+        string += '<th class="' + label + ' ' + element + '">' + element + '</th>';
     });
     return string + '</tr>';
 };
 
 function makeIPATable(){
-    var string = '<thead>' + makeCategoryRow(places,'<th></th>') + '</thead>';
+    var string = '<thead>' + makeCategoryRow(places,'') + '</thead>';
     string += '<tbody>';
     var k = 0;
     for(var i=0;i<manners.length;i++){
@@ -59,10 +60,14 @@ function showCollapsed(){
 
 $(document).ready(function(){
     $('table#IPA-table').append(makeIPATable());
-    $('table#places').append(makeCategoryRow(places));
-    $('table#manners').append(makeCategoryRow(manners));
+    $('table#places').append(makeCategoryRow(places,'places'));
+    $('table#manners').append(makeCategoryRow(manners,'manners'));
+    $('table#voicings').append(makeCategoryRow(voices,'voicing','voicing'));
     
-    $('table#places,table#manners').hide()
+    $('table#places,table#manners,table#voicings').hide();
+    
+    $('.voicing.default').addClass('chosen');
+    $('span').not('.default').hide();
     
     $('span').on('click',function(){
         $(this).toggleClass('added');
@@ -85,11 +90,11 @@ $(document).ready(function(){
     });
     
     $('#IPA-table').find('.label').on('mouseover',function(){
-        $('table#places,table#manners').show();
+        $('table#places,table#manners,table#voicings').show();
     });
     
     $('#IPA-table').find('td').not('.label').on('mouseover',function(){
-        $('table#places,table#manners').hide();
+        $('table#places,table#manners,table#voicings').hide();
     });
     
     $('#expander').on('click',function(){
@@ -103,5 +108,16 @@ $(document).ready(function(){
                 $('table#places,table#manners').show();
             }
         }
+    });
+    
+    $('.voicing').on('click',function(){
+        $(this).toggleClass('chosen');
+        $('span').hide();
+        $('.chosen').each(function(){
+            var category = $(this).attr('class').split(' ')[1];
+            if($(this).hasClass('chosen')){
+                $('span.'+category).show();
+            }
+        });
     });
 });
