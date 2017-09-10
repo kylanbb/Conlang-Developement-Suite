@@ -3,12 +3,15 @@
 
 # TODO: rewrite so that sub-apps are dynamically looked up instead of statically listed
 
-import wx
 from sys import argv
+import wx
+import dictionary
+import phonology
+from . import launcher
 
-class CDSWin:
+class CDSWin(object):
     "Abstract base class for app windows."
-    
+
     title = ""
     def __init__(self):
         # creäte a top-level window, leave the rest to derived classes
@@ -19,9 +22,6 @@ class CDSWin:
         "Build the GUI and everything belonging to it."
         # abstract method
         pass
-    
-import dictionary, phonology #, family
-from . import launcher
 
 windowTypes = {
     "launch": launcher.LauncherWin,
@@ -46,7 +46,7 @@ class CDSApp(wx.App):
         if window in self.wins:
             self.wins.remove(window)
         window.frame.Destroy()
-    
+
     def OnInit(self):
         if len(argv) > 1 and argv[1] in windowTypes:
             firstWin = self.newWindow(argv[1])
