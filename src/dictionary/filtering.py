@@ -10,7 +10,10 @@ class Filter:
         "Build the GUI and everything belonging to it."
         # text entry and filter options, powerful but easy to understand
         # to the ‘Apply Filter’ button or whatever, bind parent.filter
-        pass
+        self.filterText = wx.TextCtrl(self.panel, value="filter", style=wx.TE_PROCESS_ENTER)
+        self.panel.Sizer = wx.BoxSizer(wx.HORIZONTAL)
+        self.panel.Sizer.Add(filterText, proportion=1, flag=wx.EXPAND)
+        # somehow not visible.?
 
 class FilterOptions:
     "Data class representing the state of the filter."

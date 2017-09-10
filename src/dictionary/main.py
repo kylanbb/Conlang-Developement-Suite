@@ -29,6 +29,7 @@ class DictionaryWin(common.CDSWin):
         # below, the entry list and entry properties
         # in a SplitterWindow so the width can be adjusted
         self.splitter = wx.SplitterWindow(self.frame, style=wx.SP_LIVE_UPDATE)
+        # TODO: button for adding a new entry – but where?
         self.frame.Sizer.Add(self.splitter, proportion=1, flag=wx.EXPAND)
         
         # entries in a ListBox to the left, properties on the right get their own class
