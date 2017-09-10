@@ -1,7 +1,2 @@
 
-"""A lexicon manager/dictionary. Different views, filterable, editable."""
-
-import common
-
-class DictionaryWin(common.CDSWin):
-    title = "CDS Dictionary"
+from .main import DictionaryWin

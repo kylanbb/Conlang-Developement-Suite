@@ -1,10 +1,10 @@
 
 """A ‘launcher’ window that gives a simple choice between different sub-apps and maybe recently used files (like LibreOffice does if you start it directly)"""
 
-import common
+from . import main
 import wx
 
-class LauncherWin(common.CDSWin):
+class LauncherWin(main.CDSWin):
     title = "Conlang Development Suite"
     def build(self):
         # this is not at all pretty, but for testing, it will do.
