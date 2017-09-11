@@ -1,7 +1,7 @@
 var places = ['bilabial','labio-dental','alveolar','retroflex','palatal',
                 'velar','uvular','glottal'];
 var manners = ['nasal','plosive','fricative','approximant'];
-var voices = ['default','voiced','unvoiced','lateral']
+var voices = ['default','unvoiced','voiced','lateral','aspirated','ejective']
 
 function makeCategoryRow(category,heading,label='label'){
     string = '<tr><th class="heading">' + heading + '</th>';
@@ -50,11 +50,9 @@ function updateHighlightedClasses(clicked=false){
 
 function showCollapsed(){
     $('#IPA-table').find('th,td').show();
-    $('.label').each(function(){
-        if(!$(this).hasClass('highlight')){
-            var category = $(this).attr('class').split(' ')[1]
-            $('#IPA-table').find('.'+category).hide()
-        }
+    $('.label').not('.highlight').each(function(){
+        var category = $(this).attr('class').split(' ')[1]
+        $('#IPA-table').find('.'+category).hide()
     });
 };
 
