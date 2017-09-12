@@ -12,7 +12,7 @@ class Filter:
         
         # text entry and filter options, powerful but easy to understand
         self.filterText = wx.TextCtrl(self.panel, value="filter", style=wx.TE_PROCESS_ENTER)
-        self.applyButton = wx.Button(self.panel, label="Apply")
+        self.applyButton = wx.Button(self.panel, id=wx.ID_APPLY)
         self.panel.Sizer.Add(self.filterText, proportion=1, flag=wx.ALL, border=5)
         self.panel.Sizer.Add(self.applyButton, proportion=0, flag=wx.ALL, border=5)
         self.panel.Bind(wx.EVT_TEXT_ENTER, self.parent.filter, self.filterText)

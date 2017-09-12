@@ -30,13 +30,25 @@ class DictionaryWin(common.CDSWin):
         # below, the entry list and entry properties
         # in a SplitterWindow so the width can be adjusted
         self.splitter = wx.SplitterWindow(self.frame, style=wx.SP_LIVE_UPDATE)
-        # TODO: button for adding a new entry – but where?
         self.frame.Sizer.Add(self.splitter, proportion=1, flag=wx.EXPAND)
+        
+        self.bottom = wx.Panel(self.frame)
+        self.frame.Sizer.Add(self.bottom, proportion=0, flag=wx.EXPAND)
+        self.bottom.Sizer = wx.BoxSizer(wx.HORIZONTAL)
+        
+        self.addButton = wx.Button(self.bottom, id=wx.ID_ADD)
+        self.removeButton = wx.Button(self.bottom, id=wx.ID_REMOVE)
+        self.bottom.Sizer.Add(self.addButton, proportion=1, flag=wx.ALL, border=5)
+        self.bottom.Sizer.Add(self.removeButton, proportion=1, flag=wx.ALL, border=5)
         
         # entries in a ListBox to the left, properties on the right get their own class
         self.entriesBox = wx.ListBox(self.splitter, style=wx.LB_NEEDED_SB|wx.LB_SORT)
         self.entryProperties = EntryProperties(self)
         self.splitter.SplitVertically(self.entriesBox, self.entryProperties.panel, sashPosition=150)
+        
+        self.bottom.Bind(wx.EVT_BUTTON, lambda e: self.newEntry(), self.addButton)
+        self.bottom.Bind(wx.EVT_BUTTON, lambda e: self.removeEntry(), self.removeButton)
+        self.frame.Bind(wx.EVT_LISTBOX_DCLICK, self.onEntryDoubleClick, self.entriesBox)
         
     
     def filter(self, filterOptions):
@@ -57,12 +69,19 @@ class DictionaryWin(common.CDSWin):
         # add the word to the list box and store the key as cliënt data
         self.entriesBox.Append(entry.word, key)
     
+    def removeEntry(self, index=None):
+        if index is None: index = self._selected
+        # remove it from the dictionary backend
+        removed = self.dict.delete(self.entriesBox.GetClientData(index))
+        # remove it from the ListBox
+        self.entriesBox.Delete(index)
+    
     def onEntryDoubleClick(self, event):
         if self.entryProperties.modified and not self.entryProperties.askSave():
             self.entriesBox.Selection = self._selected # restore selection
             return
-        self._selected = self.entriesBox.Selection;
-        key = self.entriesBox.GetClientData(self._selected)
+        self._selected = event.Selection;
+        key = event.ClientData
         self.entryProperties.load(self.dict.getEntry(key))
 
 class EntryProperties:
@@ -82,6 +101,8 @@ class Dictionary:
         pass
     def add(self, entry):
         return 0
+    def delete(self, key):
+        return Entry()
     def filter(self, filterOptions):
         # return a mapping from key to item
         return {}
