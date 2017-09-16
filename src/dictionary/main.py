@@ -19,7 +19,7 @@ class DictionaryWin(common.CDSWin):
         self.dict = Dictionary()
     
     def build(self):
-        from dictionary import filtering
+        from dictionary import filtering, entries
         
         self.frame.Sizer = wx.BoxSizer(wx.VERTICAL)
         
@@ -43,7 +43,7 @@ class DictionaryWin(common.CDSWin):
         
         # entries in a ListBox to the left, properties on the right get their own class
         self.entriesBox = wx.ListBox(self.splitter, style=wx.LB_NEEDED_SB|wx.LB_SORT)
-        self.entryProperties = EntryProperties(self)
+        self.entryProperties = entries.EntryProperties(self)
         self.splitter.SplitVertically(self.entriesBox, self.entryProperties.panel, sashPosition=150)
         
         self.bottom.Bind(wx.EVT_BUTTON, lambda e: self.newEntry(), self.addButton)
@@ -62,7 +62,8 @@ class DictionaryWin(common.CDSWin):
         pass
         
     def newEntry(self, entry=None):
-        if entry is None: entry = Entry()
+        from dictionary import entries
+        if entry is None: entry = entries.Entry()
         # add entry to the dictionary data structure
         # keeping its unique key (index or whatever)
         key = self.dict.add(entry)
@@ -84,16 +85,6 @@ class DictionaryWin(common.CDSWin):
         key = event.ClientData
         self.entryProperties.load(self.dict.getEntry(key))
 
-class EntryProperties:
-    "The entry properties pane on the right"
-    def __init__(self, parent):
-        self.parent = parent
-        self.panel = wx.Panel(parent.splitter)
-    def build(self):
-        "Build the GUI and everything belonging to it."
-        # text entries for all the entry properties, like word, POS,
-        # pronunciation, translation/meaning, usage notes, derivation links
-        pass
 
 class Dictionary:
     "Abstract class for the data structure storing the dictionary."
@@ -102,14 +93,10 @@ class Dictionary:
     def add(self, entry):
         return 0
     def delete(self, key):
-        return Entry()
+        ##return Entry()
+        pass
     def filter(self, filterOptions):
         # return a mapping from key to item
         return {}
 
-class Entry:
-    "Data class for everything associated with a dictionary entry"
-    def __init__(self, word=""):
-        self.word = word
-        ...
 
