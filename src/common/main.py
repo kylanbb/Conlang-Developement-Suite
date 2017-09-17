@@ -43,10 +43,14 @@ class CDSApp(wx.App):
     wins = []
        
     def newWindow(self, typ):
-        cdsWin = _windowTypes()[typ]() # intentionally unsafe
-        cdsWin.build()
-        cdsWin.frame.Show()
-        self.wins.append(cdsWin)
+        try:
+            cdsWin = _windowTypes()[typ]() # intentionally unsafe
+            cdsWin.build()
+            cdsWin.frame.Show()
+            self.wins.append(cdsWin)
+        except:
+            self.closeWindow(cdsWin)
+            raise
         return cdsWin
 
     def closeWindow(self, window):
