@@ -45,6 +45,7 @@ class DictionaryWin(common.CDSWin):
         self.entriesBox = wx.ListBox(self.splitter, style=wx.LB_NEEDED_SB|wx.LB_SORT)
         self.entryProperties = entries.EntryProperties(self)
         self.splitter.SplitVertically(self.entriesBox, self.entryProperties.panel, sashPosition=150)
+        self.entryProperties.build()
         
         self.bottom.Bind(wx.EVT_BUTTON, lambda e: self.newEntry(), self.addButton)
         self.bottom.Bind(wx.EVT_BUTTON, lambda e: self.removeEntry(), self.removeButton)
@@ -78,7 +79,7 @@ class DictionaryWin(common.CDSWin):
         self.entriesBox.Delete(index)
     
     def onEntryDoubleClick(self, event):
-        if self.entryProperties.modified and not self.entryProperties.askSave():
+        if not self.entryProperties.save():
             self.entriesBox.Selection = self._selected # restore selection
             return
         self._selected = event.Selection;

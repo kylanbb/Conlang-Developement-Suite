@@ -40,16 +40,19 @@ class EntryProperties:
         self.createdLbl = wx.StaticText(self.panel, label="Entry creäted: ")
         
         # arrange them in a grid
-        ##for args, kwargs in [
-        ##    ([self.entryText,     (0, 0)], {"flag": wx.EXPAND}),
-        ##    ([self.posChoice,     (0, 0)], {"flag": wx.EXPAND}),
-        ##    ([self.shortDefText,  (0, 0)], {"flag": wx.EXPAND}),
-        ##    ([self.longDefText,   (0, 0)], {"flag": wx.EXPAND}),
-        ##    ([self.pronuncText,   (0, 0)], {"flag": wx.EXPAND}),
-        ##    ([self.classesChkLst, (0, 0)], {"flag": wx.EXPAND}),
-        ##    # ...
-        ##    ([self.createdLbl,    (0, 0)], {"flag": wx.EXPAND})
-        ##]: self.panel.Sizer.Add(*args, **kwargs)
+        for args, kwargs in [
+            ([self.entryText,     (0, 0)], {"flag": wx.EXPAND}),
+            ([self.posChoice,     (0, 1)], {"flag": wx.EXPAND}),
+            ([self.shortDefText,  (1, 1)], {"flag": wx.EXPAND}),
+            ([self.longDefText,   (2, 0)], {"flag": wx.EXPAND}),
+            ([self.pronuncText,   (1, 0)], {"flag": wx.EXPAND}),
+            ([self.classesChkLst, (2, 1)], {"flag": wx.EXPAND}),
+            # ...
+            ([self.createdLbl,    (3, 0)], {"flag": wx.EXPAND, "span": (0, 1)})
+        ]: self.panel.Sizer.Add(*args, **kwargs)
+        self.panel.Sizer.AddGrowableCol(0, 1)
+        self.panel.Sizer.AddGrowableCol(1, 1)
+        self.panel.Sizer.AddGrowableRow(2, 1)
 
 
 class Entry:
