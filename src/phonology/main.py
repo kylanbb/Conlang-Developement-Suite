@@ -7,7 +7,7 @@ if path[0] == os.path.dirname(__file__):
     # modify sys.path so that it points to src, not to src/phonology
     path[0] = os.path.dirname(path[0]) # parent directory
 
-import common
+import src.common as common
 import wx
 
 class PhonologyView:
