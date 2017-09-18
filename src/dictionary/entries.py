@@ -53,11 +53,21 @@ class EntryProperties:
         self.panel.Sizer.AddGrowableCol(0, 1)
         self.panel.Sizer.AddGrowableCol(1, 1)
         self.panel.Sizer.AddGrowableRow(2, 1)
-
+    def load(self, entry):
+        pass
+    def get(self):
+        return Entry()
 
 class Entry:
     "Data class for everything associated with a dictionary entry"
-    def __init__(self, word="", timeCreated=None):
+    word = None
+    shortDef = None
+    longDef = None
+    partOfSpeech = None
+    pronunciation = None
+    classes = None
+    
+    def __init__(self, word=None, timeCreated=None):
         from datetime import datetime
         if timeCreated is None: self.timeCreated = datetime.now()
         else: self.timeCreated = timeCreated

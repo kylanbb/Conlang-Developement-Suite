@@ -9,6 +9,7 @@ if path[0] == os.path.dirname(__file__):
 
 import common
 import wx
+from dictionary import entries
 
 class DictionaryWin(common.CDSWin):
     title = "CDS Dictionary"
@@ -19,7 +20,7 @@ class DictionaryWin(common.CDSWin):
         self.dict = Dictionary()
     
     def build(self):
-        from dictionary import filtering, entries
+        from dictionary import filtering
         
         self.frame.Sizer = wx.BoxSizer(wx.VERTICAL)
         
@@ -63,7 +64,6 @@ class DictionaryWin(common.CDSWin):
         pass
         
     def newEntry(self, entry=None):
-        from dictionary import entries
         if entry is None: entry = entries.Entry()
         # add entry to the dictionary data structure
         # keeping its unique key (index or whatever)
@@ -77,6 +77,20 @@ class DictionaryWin(common.CDSWin):
         removed = self.dict.delete(self.entriesBox.GetClientData(index))
         # remove it from the ListBox
         self.entriesBox.Delete(index)
+    
+    def updateEntry(self, index=None, entry=None):
+        selected = index is None
+        if selected:
+            index = self._selected
+            entry = self.entryProperties.get()
+        key = self.entriesBox.GetClientData(index)
+        self.dict.update(key, entry)
+        self.entriesBox.Delete(index)
+        index = self.entriesBox.Append(entry, key)
+        if selected:
+            self.entriesBox.Selection = index
+            self._selected = index
+    
     
     def onEntryDoubleClick(self, event):
         if not self.entryProperties.save():
@@ -92,9 +106,13 @@ class Dictionary:
     def get(self, key):
         pass
     def add(self, entry):
+        # return the new key
         return 0
     def delete(self, key):
         ##return Entry()
+        pass
+    def update(self, key, entry):
+        # if entry is None, do nothing!
         pass
     def filter(self, filterOptions):
         # return a mapping from key to item
