@@ -9,6 +9,22 @@ if path[0] == os.path.dirname(__file__):
 
 import common
 import wx
+
+PARTS_OF_SPEECH = [
+    "unspecified",
+    "noun",
+    "verb",
+    "adjective",
+    "adverb",
+    "pronoun",
+    "preposition",
+    "conjunction",
+    "particle",
+    "phrase",
+    # anything missing?
+]
+POS_UNSPECIFIED = 0
+
 from dictionary import entries
 
 class DictionaryWin(common.CDSWin):
@@ -48,6 +64,9 @@ class DictionaryWin(common.CDSWin):
         self.splitter.SplitVertically(self.entriesBox, self.entryProperties.panel, sashPosition=150)
         self.entryProperties.build()
         
+        self.frame.Fit()
+        self.frame.MinSize = self.frame.Size
+        
         self.bottom.Bind(wx.EVT_BUTTON, lambda e: self.newEntry(), self.addButton)
         self.bottom.Bind(wx.EVT_BUTTON, lambda e: self.removeEntry(), self.removeButton)
         self.frame.Bind(wx.EVT_LISTBOX_DCLICK, self.onEntryDoubleClick, self.entriesBox)
@@ -69,7 +88,7 @@ class DictionaryWin(common.CDSWin):
         # keeping its unique key (index or whatever)
         key = self.dict.add(entry)
         # add the word to the list box and store the key as cliënt data
-        self.entriesBox.Append(entry.word, key)
+        self.entriesBox.Append(entry.word if entry.word is not None else "", key)
     
     def removeEntry(self, index=None):
         if index is None: index = self._selected
