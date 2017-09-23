@@ -69,7 +69,7 @@ class DictionaryWin(common.CDSWin):
         
         self.bottom.Bind(wx.EVT_BUTTON, lambda e: self.newEntry(), self.addButton)
         self.bottom.Bind(wx.EVT_BUTTON, lambda e: self.removeEntry(), self.removeButton)
-        self.frame.Bind(wx.EVT_LISTBOX_DCLICK, self.onEntryDoubleClick, self.entriesBox)
+        self.frame.Bind(wx.EVT_LISTBOX, self.onListbox, self.entriesBox)
         
     
     def filter(self, filterOptions):
@@ -80,7 +80,13 @@ class DictionaryWin(common.CDSWin):
         # then clear the list box and populate with the filtered entries (easy to code)
         # or (harder to code, but faster): iterate over the list box’s items and remove
         # those that don’t satisfy the filter.
-        pass
+        index = 0
+        while index < self.entriesBox.Count:
+            key = self.entriesBox.GetClientData(index)
+            if filterOptions.allow(self._dict.get(key)):
+                index += 1
+            else:
+                self.entriesBox.Delete(index)
         
     def newEntry(self, entry=None):
         if entry is None: entry = entries.Entry()
@@ -111,7 +117,7 @@ class DictionaryWin(common.CDSWin):
             self._selected = index
     
     
-    def onEntryDoubleClick(self, event):
+    def onListbox(self, event):
         if not self.entryProperties.save():
             self.entriesBox.Selection = self._selected # restore selection
             return
@@ -158,5 +164,5 @@ class DictDictionary(Dictionary):
     def filter(self, filterOptions):
         result = {}
         for key, entry in _dict.items():
-            if filterOptions.allow(value.entry):
+            if filterOptions.allow(entry):
                 result[key] = entry

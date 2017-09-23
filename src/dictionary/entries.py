@@ -74,3 +74,7 @@ class Entry:
         else: self.timeCreated = timeCreated
         self.word = word
         ...
+
+    def update(self, other):
+        # Update this entry with all fields that are not None in other
+        ...

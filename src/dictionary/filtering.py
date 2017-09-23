@@ -15,9 +15,16 @@ class Filter:
         self.applyButton = wx.Button(self.panel, id=wx.ID_APPLY)
         self.panel.Sizer.Add(self.filterText, proportion=1, flag=wx.ALL, border=5)
         self.panel.Sizer.Add(self.applyButton, proportion=0, flag=wx.ALL, border=5)
-        self.panel.Bind(wx.EVT_TEXT_ENTER, self.parent.filter, self.filterText)
-        self.panel.Bind(wx.EVT_BUTTON, self.parent.filter, self.applyButton)
+        self.panel.Bind(wx.EVT_TEXT_ENTER, self.onFilter, self.filterText)
+        self.panel.Bind(wx.EVT_BUTTON, self.onFilter, self.applyButton)
         # add stuff for properly controlling the filter
+        
+    def onFilter(self, event):
+        self.parent.filter(self.getOptions())
+    
+    def getOptions(self):
+        ##return FilterOptions()
+        pass
 
 class FilterOptions:
     "Data class representing the state of the filter."
