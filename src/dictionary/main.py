@@ -33,7 +33,7 @@ class DictionaryWin(common.CDSWin):
     def __init__(self):
         super().__init__()
         # substitute Dictionary with implementation class here:
-        self.dict = Dictionary()
+        self.dict = DictDictionary()
     
     def build(self):
         from dictionary import filtering
@@ -116,7 +116,6 @@ class DictionaryWin(common.CDSWin):
             self.entriesBox.Selection = index
             self._selected = index
     
-    
     def onListbox(self, event):
         if not self.entryProperties.save():
             self.entriesBox.Selection = self._selected # restore selection
@@ -144,6 +143,10 @@ class Dictionary:
         return {}
 
 class DictDictionary(Dictionary):
+    """Implementing Dictionary using a dict storing the entries
+directly. Might not be the best for large dictionaries,
+but it’s easy.
+"""
     _dict = []
     def get(self, key):
         return _dict[key]

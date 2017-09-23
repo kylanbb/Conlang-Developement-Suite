@@ -58,6 +58,11 @@ class EntryProperties:
         pass
     def get(self):
         return Entry()
+    
+    def save(self):
+        # (maybe ask for permission to save first)
+        # take all the fields, store them in an entry
+        # then call self.parent.update(entry)
 
 class Entry:
     "Data class for everything associated with a dictionary entry"
