@@ -137,4 +137,26 @@ class Dictionary:
         # return a mapping from key to item
         return {}
 
+class DictDictionary(Dictionary):
+    _dict = []
+    def get(self, key):
+        return _dict[key]
 
+    def add(self, entry):
+        key = hash(entry)
+        while key in _dict:
+            key += 1
+        _dict[key] = entry
+        return key
+
+    def delete(self, key):
+        return _dict.pop(key)
+
+    def update(self, key, entry):
+        _dict[key].update(entry)
+
+    def filter(self, filterOptions):
+        result = {}
+        for key, entry in _dict.items():
+            if filterOptions.allow(value.entry):
+                result[key] = entry
