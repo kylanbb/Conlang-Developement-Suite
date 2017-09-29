@@ -4,6 +4,7 @@ from dictionary import main
 
 class EntryProperties:
     "The entry properties pane on the right"
+    
     def __init__(self, parent):
         self.parent = parent
         self.panel = wx.Panel(parent.splitter)
@@ -53,17 +54,14 @@ class EntryProperties:
         self.panel.Sizer.AddGrowableCol(0, 1)
         self.panel.Sizer.AddGrowableCol(1, 1)
         self.panel.Sizer.AddGrowableRow(5, 1)
+        
                 
     def load(self, entry):
+        "Load the specified entry into the controls."
         pass
     def get(self):
+        "Return an Entry with the state of the controls."
         return Entry()
-    
-    def save(self):
-        # (maybe ask for permission to save first)
-        # take all the fields, store them in an entry
-        # then call self.parent.update(entry)
-        ...
 
 class Entry:
     "Data class for everything associated with a dictionary entry"

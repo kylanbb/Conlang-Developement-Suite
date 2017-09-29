@@ -103,7 +103,7 @@ class DictionaryWin(common.CDSWin):
         # remove it from the ListBox
         self.entriesBox.Delete(index)
     
-    def updateEntry(self, index=None, entry=None):
+    def updateEntry(self, entry=None, index=None):
         selected = index is None
         if selected:
             index = self._selected
@@ -117,9 +117,10 @@ class DictionaryWin(common.CDSWin):
             self._selected = index
     
     def onListbox(self, event):
-        if not self.entryProperties.save():
-            self.entriesBox.Selection = self._selected # restore selection
-            return
+        ##if not self.entryProperties.save():
+            #self.entriesBox.Selection = self._selected # restore selection
+            ##return
+        self.updateEntry(self.entryProperties.get())
         self._selected = event.Selection;
         key = event.ClientData
         self.entryProperties.load(self.dict.getEntry(key))
@@ -147,25 +148,27 @@ class DictDictionary(Dictionary):
 directly. Might not be the best for large dictionaries,
 but it’s easy.
 """
-    _dict = []
+    _dict = {}
+    
     def get(self, key):
-        return _dict[key]
+        return self._dict[key]
 
     def add(self, entry):
-        key = hash(entry)
-        while key in _dict:
+        key = hash(entry) # just use the Python-provided hash
+        while key in self._dict:
+            # on collision, increment until a unique key is found
             key += 1
-        _dict[key] = entry
+        self._dict[key] = entry
         return key
 
     def delete(self, key):
-        return _dict.pop(key)
+        return self._dict.pop(key)
 
     def update(self, key, entry):
-        _dict[key].update(entry)
+        self._dict[key].update(entry)
 
     def filter(self, filterOptions):
         result = {}
-        for key, entry in _dict.items():
+        for key, entry in self._dict.items():
             if filterOptions.allow(entry):
                 result[key] = entry
