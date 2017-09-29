@@ -63,23 +63,44 @@ class EntryProperties:
         # (maybe ask for permission to save first)
         # take all the fields, store them in an entry
         # then call self.parent.update(entry)
+        ...
 
 class Entry:
     "Data class for everything associated with a dictionary entry"
-    word = None
-    shortDef = None
-    longDef = None
-    partOfSpeech = None
-    pronunciation = None
-    classes = None
+    _fields = [
+        "word",
+        "shortDef",
+        "longDef",
+        "partOfSpeech",
+        "pronunciation",
+        "classes",
+        "timeCreated",
+    ]
     
-    def __init__(self, word=None, timeCreated=None):
+    def __init__(self, 
+            word=None,
+            shortDef=None,
+            longDef=None,
+            partOfSpeech=None,
+            pronunciation=None,
+            classes=None,
+            timeCreated=None):
         from datetime import datetime
-        if timeCreated is None: self.timeCreated = datetime.now()
-        else: self.timeCreated = timeCreated
+        if timeCreated is None:
+            self.timeCreated = datetime.now()
+        else:
+            self.timeCreated = timeCreated
         self.word = word
-        ...
+        self.shortDef = shortDef
+        self.longDef = longDef
+        self.partOfSpeech = partOfSpeech
+        self.pronunciation = pronunciation
+        self.classes = classes
+        
 
     def update(self, other):
-        # Update this entry with all fields that are not None in other
-        ...
+        "Update this entry with all fields that are not None in other"
+        for field in self._fields:
+            othervalue = getattr(other, field, None)
+            if othervalue is not None:
+                setattr(self, field, othervalue)
