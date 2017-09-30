@@ -1,7 +1,7 @@
 
 """A lexicon manager/dictionary. Different views, filterable, editable."""
 
-from sys import path
+from sys import path, stderr
 import os.path
 if path[0] == os.path.dirname(__file__):
     # modify sys.path so that it points to src, not to src/dictionary
@@ -29,7 +29,7 @@ from dictionary import entries
 
 class DictionaryWin(common.CDSWin):
     title = "CDS Dictionary"
-    _selected = 0
+    _selected = wx.NOT_FOUND
     def __init__(self):
         super().__init__()
         # substitute Dictionary with implementation class here:
@@ -87,6 +87,8 @@ class DictionaryWin(common.CDSWin):
                 index += 1
             else:
                 self.entriesBox.Delete(index)
+        # what about entries that were previously filtered
+        # but should be visible again?
         
     def newEntry(self, entry=None):
         if entry is None: entry = entries.Entry()
@@ -94,36 +96,49 @@ class DictionaryWin(common.CDSWin):
         # keeping its unique key (index or whatever)
         key = self.dict.add(entry)
         # add the word to the list box and store the key as cliënt data
-        self.entriesBox.Append(entry.word if entry.word is not None else "", key)
+        index = self.entriesBox.Append(entry.word if entry.word is not None else "", key)
+        self.entriesBox.Selection = index
     
     def removeEntry(self, index=None):
+        print("DictionaryWin.removeEntry:",
+            f"index = {index},",
+            f"self._selected = {self._selected}",
+            file=stderr)
         if index is None: index = self._selected
         # remove it from the dictionary backend
         removed = self.dict.delete(self.entriesBox.GetClientData(index))
         # remove it from the ListBox
         self.entriesBox.Delete(index)
+        self.entryProperties.clear()
+        self._selected = self.entriesBox.Selection
     
     def updateEntry(self, entry=None, index=None):
-        selected = index is None
-        if selected:
+        print("DictionaryWin.updateEntry:",
+            f"index = {index}",
+            f"self._selected = {self._selected}",
+            file=stderr)
+        if index is None:
             index = self._selected
+        if entry is None:
             entry = self.entryProperties.get()
         key = self.entriesBox.GetClientData(index)
         self.dict.update(key, entry)
         self.entriesBox.Delete(index)
-        index = self.entriesBox.Append(entry, key)
-        if selected:
-            self.entriesBox.Selection = index
-            self._selected = index
+        self.entriesBox.Append("" if entry.word is None else entry.word, key)
     
     def onListbox(self, event):
+        print("DictionaryWin.onListbox:",
+            f"event.Selection = {event.Selection},",
+            f"self._selected = {self._selected}",
+            file=stderr)
         ##if not self.entryProperties.save():
             #self.entriesBox.Selection = self._selected # restore selection
             ##return
-        self.updateEntry(self.entryProperties.get())
-        self._selected = event.Selection;
+        if self._selected != wx.NOT_FOUND:
+            self.updateEntry(self.entryProperties.get())
         key = event.ClientData
-        self.entryProperties.load(self.dict.getEntry(key))
+        self.entryProperties.load(self.dict.get(key))
+        self._selected = self.entriesBox.Selection;
 
 
 class Dictionary:

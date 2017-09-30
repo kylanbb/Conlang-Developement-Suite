@@ -49,7 +49,7 @@ class EntryProperties:
             ([label("Classes"), (4, 1)], {"flag": wx.TOP, "border": 5}),
             ([self.classesChkLst, (5, 1)], {"flag": wx.EXPAND}),
             # ...
-            ([self.createdLbl,    (6, 0)], {"flag": wx.EXPAND, "span": (0, 1)}),
+            ([self.createdLbl,    (6, 0)], {"flag": wx.EXPAND, "span": (1, 2)}),
         ]: self.panel.Sizer.Add(*args, **kwargs)
         self.panel.Sizer.AddGrowableCol(0, 1)
         self.panel.Sizer.AddGrowableCol(1, 1)
@@ -58,10 +58,33 @@ class EntryProperties:
                 
     def load(self, entry):
         "Load the specified entry into the controls."
-        pass
+        def elvis(a, b=""):
+            return a if a is not None else b
+        self.entryText.Value = elvis(entry.word)
+        self.shortDefText.Value = elvis(entry.shortDef)
+        self.longDefText.Value = elvis(entry.longDef)
+        self.posChoice.Selection = elvis(entry.partOfSpeech, 0)
+        self.pronuncText.Value = elvis(entry.pronunciation)
+        ##self.classesChkLst.???
+        self._timeCreated = entry.timeCreated
+        self.createdLbl.LabelText = "Entry creäted: " + elvis(entry.timeCreated.isoformat(sep=" ", timespec="seconds"))
+
     def get(self):
         "Return an Entry with the state of the controls."
-        return Entry()
+        return Entry(
+            word=self.entryText.Value,
+            shortDef=self.shortDefText.Value,
+            longDef=self.longDefText.Value,
+            partOfSpeech=self.posChoice.Selection,
+            pronunciation=self.pronuncText.Value,
+            ##classes=self.classesChkLst.???
+            timeCreated=self._timeCreated
+        )
+    
+    def clear(self):
+        self.load(Entry())
+        self._timeCreated = None
+        self.createdLbl.LabelText = "Entry creäted:"
 
 class Entry:
     "Data class for everything associated with a dictionary entry"
