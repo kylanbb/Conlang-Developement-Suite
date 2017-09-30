@@ -100,10 +100,6 @@ class DictionaryWin(common.CDSWin):
         self.entriesBox.Selection = index
     
     def removeEntry(self, index=None):
-        print("DictionaryWin.removeEntry:",
-            f"index = {index},",
-            f"self._selected = {self._selected}",
-            file=stderr)
         if index is None: index = self._selected
         # remove it from the dictionary backend
         removed = self.dict.delete(self.entriesBox.GetClientData(index))
@@ -113,10 +109,6 @@ class DictionaryWin(common.CDSWin):
         self._selected = self.entriesBox.Selection
     
     def updateEntry(self, entry=None, index=None):
-        print("DictionaryWin.updateEntry:",
-            f"index = {index}",
-            f"self._selected = {self._selected}",
-            file=stderr)
         if index is None:
             index = self._selected
         if entry is None:
@@ -127,10 +119,6 @@ class DictionaryWin(common.CDSWin):
         self.entriesBox.Append("" if entry.word is None else entry.word, key)
     
     def onListbox(self, event):
-        print("DictionaryWin.onListbox:",
-            f"event.Selection = {event.Selection},",
-            f"self._selected = {self._selected}",
-            file=stderr)
         ##if not self.entryProperties.save():
             #self.entriesBox.Selection = self._selected # restore selection
             ##return
