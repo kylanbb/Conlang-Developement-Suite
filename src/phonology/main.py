@@ -30,6 +30,10 @@ class PhonologyWin(common.CDSWin):
         self.notebook.ChangeSelection(1)
     def viewPhonotactics(self):
         self.notebook.ChangeSelection(2)
+    def currentView(self):
+        return [self.inventory,
+                self.allophony,
+                self.phonotactics][self.notebook.Selection]
     
     def build(self):
         from phonology import inventory, allophony, phonotactics
@@ -37,6 +41,8 @@ class PhonologyWin(common.CDSWin):
         # inventory, phonotactics, and allophony (and possibly more)
         self.notebook = wx.Notebook(self.frame, style=wx.NB_TOP)
         self.notebook.SetDoubleBuffered(True)
+        self.frame.Sizer = wx.BoxSizer(wx.HORIZONTAL)
+        self.frame.Sizer.Add(self.notebook, 1, flag=wx.EXPAND)
 
         self.inventory = inventory.InventoryView(self)
         self.allophony = allophony.AllophonyView(self)
@@ -51,4 +57,6 @@ class PhonologyWin(common.CDSWin):
         self.inventory.build()
         self.allophony.build()
         self.phonotactics.build()
-        pass
+        
+        self.frame.Fit()
+        self.frame.MinSize = self.frame.Size
