@@ -71,6 +71,15 @@ consonants = [
     PhonemeBox('pharyngeal', 'fricative', 'ħ', 'ʕ')
 ]
 
+places = []
+manners = []
+for box in consonants:
+    if box.place not in places:
+        places.append(box.place)
+    if box.manner not in manners:
+        manners.append(box.manner)
+
+
 def getBox(place, manner): 
     return [box for box in consonants if box.place == place and box.manner == manner][0]
     

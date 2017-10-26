@@ -29,15 +29,8 @@ class ConsonantTable:
         # a static text or panel or something? Not sure
         self.panel.Sizer = wx.GridBagSizer(vgap=5, hgap=5)
         
-        # not using sets because sets don’t preserve order
-        places = []
-        manners = []
         # iterate through all the place–manner combinations
         for box in consonantBank.consonants:
-            if box.place not in places:
-                places.append(box.place)
-            if box.manner not in manners:
-                manners.append(box.manner)
             ...
             for sound in box.getModels():
                 ...
@@ -45,10 +38,12 @@ class ConsonantTable:
         
         
         # label the rows and columns
-        for col, lbl in enumerate(places, 1):
+        for col, lbl in enumerate(consonantBank.places, 1):
+            _debug("ConsonantTable.build():", f"col: {col}", f"lbl: {lbl}")
             self.panel.Sizer.Add(wx.StaticText(self.panel, label=lbl), (0, col), flag=wx.TOP|wx.LEFT|wx.EXPAND, border=5)
             self.panel.Sizer.AddGrowableCol(col, 1)
-        for row, lbl in enumerate(manners, 1):
+        for row, lbl in enumerate(consonantBank.manners, 1):
+            _debug("ConsonantTable.build():", f"row: {row}", f"lbl: {lbl}")
             self.panel.Sizer.Add(wx.StaticText(self.panel, label=lbl), (row, 0), flag=wx.TOP|wx.EXPAND, border=5)
             self.panel.Sizer.AddGrowableRow(row, 1)
 
