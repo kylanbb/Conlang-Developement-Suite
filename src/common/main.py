@@ -13,6 +13,8 @@ import wx
 
 class CDSWin:
     "Abstract base class for app windows."
+    MIN_HEIGHT = 0
+    MIN_WIDTH = 0
     
     title = ""
     def __init__(self):
@@ -24,6 +26,11 @@ class CDSWin:
         "Build the GUI and everything belonging to it."
         # abstract method
         pass
+    
+    def resetMinSize(self):
+        self.frame.MinSize = wx.Size(self.MIN_WIDTH, self.MIN_HEIGHT)
+        self.frame.Fit()
+        self.frame.MinSize = self.frame.Size
 
 def _windowTypes():
     import dictionary, phonology #, family

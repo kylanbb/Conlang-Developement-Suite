@@ -64,8 +64,7 @@ class DictionaryWin(common.CDSWin):
         self.splitter.SplitVertically(self.entriesBox, self.entryProperties.panel, sashPosition=150)
         self.entryProperties.build()
         
-        self.frame.Fit()
-        self.frame.MinSize = self.frame.Size
+        self.resetMinSize()
         
         self.bottom.Bind(wx.EVT_BUTTON, lambda e: self.newEntry(), self.addButton)
         self.bottom.Bind(wx.EVT_BUTTON, lambda e: self.removeEntry(), self.removeButton)

@@ -58,5 +58,4 @@ class PhonologyWin(common.CDSWin):
         self.allophony.build()
         self.phonotactics.build()
         
-        self.frame.Fit()
-        self.frame.MinSize = self.frame.Size
+        self.resetMinSize()
