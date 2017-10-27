@@ -29,21 +29,26 @@ class ConsonantTable:
         # a static text or panel or something? Not sure
         self.panel.Sizer = wx.GridBagSizer(vgap=5, hgap=5)
         
-        # iterate through all the place–manner combinations
-        for box in consonantBank.consonants:
-            ...
-            for sound in box.getModels():
-                ...
-            ...
-        
+        # iterate through all the places and manners
+        for col, place in enumerate(consonantBank.places, 1):
+            for row, manner in enumerate(consonantBank.manners, 1):
+                box = consonantBank.getBox(place, manner)
+                # if there’s no consonant of that place and manner, skip
+                if not box: continue
+                # pack the consonants into a BoxSizer
+                boxSizer = wx.BoxSizer(wx.HORIZONTAL) 
+                for sound in box.getModels():
+                    boxSizer.Add(wx.StaticText(self.panel, label=sound.symbol), 1, flag=wx.EXPAND)
+                # place the sizer directly inside the GridBagSizer
+                self.panel.Sizer.Add(boxSizer, (row, col), flag=wx.EXPAND)
         
         # label the rows and columns
         for col, lbl in enumerate(consonantBank.places, 1):
-            _debug("ConsonantTable.build():", f"col: {col}", f"lbl: {lbl}")
-            self.panel.Sizer.Add(wx.StaticText(self.panel, label=lbl), (0, col), flag=wx.TOP|wx.LEFT|wx.EXPAND, border=5)
+            self.panel.Sizer.Add(wx.StaticText(self.panel, label=lbl), (0, col), 
+                                 flag=wx.TOP|wx.LEFT|wx.EXPAND, border=5)
             self.panel.Sizer.AddGrowableCol(col, 1)
         for row, lbl in enumerate(consonantBank.manners, 1):
-            _debug("ConsonantTable.build():", f"row: {row}", f"lbl: {lbl}")
-            self.panel.Sizer.Add(wx.StaticText(self.panel, label=lbl), (row, 0), flag=wx.TOP|wx.EXPAND, border=5)
+            self.panel.Sizer.Add(wx.StaticText(self.panel, label=lbl), (row, 0), 
+                                 flag=wx.TOP|wx.EXPAND, border=5)
             self.panel.Sizer.AddGrowableRow(row, 1)
 

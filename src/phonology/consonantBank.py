@@ -80,8 +80,11 @@ for box in consonants:
         manners.append(box.manner)
 
 
-def getBox(place, manner): 
-    return [box for box in consonants if box.place == place and box.manner == manner][0]
+def getBox(place, manner):
+    for box in consonants:
+        if box.place == place and box.manner = manner:
+            return box
+    return False # if the box could not be found
     
 def getNasal(place): 
     return getBox(place, 'nasal').voiced
